@@ -12,5 +12,6 @@ namespace HandyTool.Global
         public readonly Color ColorStoredProcedure = Color.FromArgb(192, 255, 192);
         public readonly Color ColorView = Color.FromArgb(255, 255, 192);
         public readonly Color ColorFunction = Color.FromArgb(255, 224, 192);
+        public readonly Color ColorWhite = Color.White;
     }
 }

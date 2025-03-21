@@ -1,4 +1,5 @@
-﻿using HandyTool.Tabs.SqlSeeker.Model;
+﻿using HandyTool.Global;
+using HandyTool.Tabs.SqlSeeker.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace HandyTool.Tabs.SqlSeeker
         public SqlSeekerPage()
         {
             InitializeComponent();
+            FilterResultGridView.CellFormatting += FilterResultGridView_CellFormatting;  // Subscribe to the event
         }
 
         private void SearchBar_TextChanged(object sender, EventArgs e)
@@ -29,7 +31,6 @@ namespace HandyTool.Tabs.SqlSeeker
 
                 TextBox FilterString = sender as TextBox;
                 string value = FilterString.Text;
-
 
                 string query = BuildDynamicSqlQuery(value);
 
@@ -56,23 +57,21 @@ namespace HandyTool.Tabs.SqlSeeker
 
                 FilterResultGridView.DataSource = null;
                 FilterResultGridView.DataSource = FilterList;
-                
 
                 if (FilterResultGridView.Columns.Count > 0)
                 {
                     int totalWidth = FilterResultGridView.Width;
 
-                    FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08); 
-                    FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10); 
-                    FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10); 
-                    FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12); 
-                    FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);  
-                    FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10); 
-                    FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30); 
+                    FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
+                    FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10);
+                    FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10);
+                    FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12);
+                    FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
+                    FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
+                    FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex, "Error Message"
                         , MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -121,19 +120,15 @@ namespace HandyTool.Tabs.SqlSeeker
 
         private string BuildDynamicSqlQuery(string filterText)
         {
-            // Set filter value based on user input
             string tableNameFilter = "%" + filterText + "%";
 
-            // Get checkbox states
             bool searchTable = CheckBoxTables.Checked;
             bool searchStoredProcedure = CheckBoxStoredProcedure.Checked;
             bool searchView = CheckBoxViews.Checked;
             bool searchFunction = CheckBoxFunctions.Checked;
 
-            // Build the dynamic SQL query similar to your original SQL script
             StringBuilder sqlBuilder = new StringBuilder();
 
-            // Declare variables section
             sqlBuilder.AppendLine("DECLARE @tableNameFilter NVARCHAR(128) = '" + tableNameFilter + "'");
             sqlBuilder.AppendLine("DECLARE @sql NVARCHAR(MAX) = ''");
             sqlBuilder.AppendLine("DECLARE @databaseName NVARCHAR(128)");
@@ -142,7 +137,6 @@ namespace HandyTool.Tabs.SqlSeeker
             sqlBuilder.AppendLine($"DECLARE @searchView int = {(searchView ? 1 : 0)}");
             sqlBuilder.AppendLine($"DECLARE @searchFunction int = {(searchFunction ? 1 : 0)}");
 
-            // Rest of your SQL script
             sqlBuilder.AppendLine(@"
                                     DECLARE db_cursor CURSOR FOR
                                         SELECT name 
@@ -287,5 +281,41 @@ namespace HandyTool.Tabs.SqlSeeker
             return sqlBuilder.ToString();
         }
 
+        private void FilterResultGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            ColorGlobal cg = new ColorGlobal();
+            if (FilterResultGridView.Columns[e.ColumnIndex].Name == "ObjectType")
+            {
+                string objectType = e.Value?.ToString();
+                Color rowColor = cg.ColorWhite;
+
+                if (objectType != null)
+                {
+                    switch (objectType)
+                    {
+                        case "Table":
+                            rowColor = cg.ColorTable;
+                            break;
+                        case "Stored Procedure":
+                            rowColor = cg.ColorStoredProcedure;
+                            break;
+                        case "View":
+                            rowColor = cg.ColorView;
+                            break;
+                        case "Function":
+                            rowColor = cg.ColorFunction;
+                            break;
+                        default:
+                            rowColor = cg.ColorWhite;
+                            break;
+                    }
+                }
+
+                foreach (DataGridViewCell cell in FilterResultGridView.Rows[e.RowIndex].Cells)
+                {
+                    cell.Style.BackColor = rowColor;
+                }
+            }
+        }
     }
 }

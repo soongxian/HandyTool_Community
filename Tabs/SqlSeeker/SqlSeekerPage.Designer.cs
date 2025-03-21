@@ -30,6 +30,7 @@ namespace HandyTool.Tabs.SqlSeeker
         /// </summary>
         private void InitializeComponent()
         {
+            ColorGlobal cg = new ColorGlobal();
             SearchBar = new TextBox();
             CheckBoxTables = new CheckBox();
             CheckBoxStoredProcedure = new CheckBox();
@@ -58,7 +59,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // CheckBoxTables
             // 
             CheckBoxTables.AutoSize = true;
-            CheckBoxTables.BackColor = Color.FromArgb(192, 255, 255);
+            CheckBoxTables.BackColor = cg.ColorTable;
             CheckBoxTables.Checked = true;
             CheckBoxTables.CheckState = CheckState.Checked;
             CheckBoxTables.Dock = DockStyle.Fill;
@@ -74,7 +75,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // CheckBoxStoredProcedure
             // 
             CheckBoxStoredProcedure.AutoSize = true;
-            CheckBoxStoredProcedure.BackColor = Color.FromArgb(192, 255, 192);
+            CheckBoxStoredProcedure.BackColor = cg.ColorStoredProcedure;
             CheckBoxStoredProcedure.Checked = true;
             CheckBoxStoredProcedure.CheckState = CheckState.Checked;
             CheckBoxStoredProcedure.Dock = DockStyle.Fill;
@@ -90,7 +91,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // CheckBoxViews
             // 
             CheckBoxViews.AutoSize = true;
-            CheckBoxViews.BackColor = Color.FromArgb(255, 255, 192);
+            CheckBoxViews.BackColor = cg.ColorView;
             CheckBoxViews.Checked = true;
             CheckBoxViews.CheckState = CheckState.Checked;
             CheckBoxViews.Dock = DockStyle.Fill;
@@ -106,7 +107,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // CheckBoxFunctions
             // 
             CheckBoxFunctions.AutoSize = true;
-            CheckBoxFunctions.BackColor = Color.FromArgb(255, 224, 192);
+            CheckBoxFunctions.BackColor = cg.ColorFunction;
             CheckBoxFunctions.Checked = true;
             CheckBoxFunctions.CheckState = CheckState.Checked;
             CheckBoxFunctions.Dock = DockStyle.Fill;
