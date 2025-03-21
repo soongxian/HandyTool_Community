@@ -49,7 +49,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // SearchBar
             // 
-            SearchBar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            SearchBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             SearchBar.Location = new Point(6, 7);
             SearchBar.Name = "SearchBar";
             SearchBar.Size = new Size(1311, 27);
@@ -93,7 +93,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxViews.BackColor = Color.FromArgb(255, 255, 192);
             CheckBoxViews.Checked = true;
             CheckBoxViews.CheckState = CheckState.Checked;
-            CheckBoxViews.Location = new Point(1323, 37);
+            CheckBoxViews.Location = new Point(1376, 37);
             CheckBoxViews.Name = "CheckBoxViews";
             CheckBoxViews.Size = new Size(69, 24);
             CheckBoxViews.TabIndex = 3;
@@ -108,7 +108,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxFunctions.BackColor = Color.FromArgb(255, 224, 192);
             CheckBoxFunctions.Checked = true;
             CheckBoxFunctions.CheckState = CheckState.Checked;
-            CheckBoxFunctions.Location = new Point(1398, 37);
+            CheckBoxFunctions.Location = new Point(1451, 37);
             CheckBoxFunctions.Name = "CheckBoxFunctions";
             CheckBoxFunctions.Size = new Size(93, 24);
             CheckBoxFunctions.TabIndex = 4;
@@ -129,7 +129,7 @@ namespace HandyTool.Tabs.SqlSeeker
             Margin = new Padding(3, 4, 3, 4);
             Name = "SqlSeekerPage";
             Padding = new Padding(3, 4, 3, 4);
-            Size = new Size(1553, 574);
+            Size = new Size(1553, 487);
             ResumeLayout(false);
             PerformLayout();
         }
