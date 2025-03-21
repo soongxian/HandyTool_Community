@@ -38,9 +38,11 @@ namespace HandyTool.Tabs.SqlSeeker
             TableLayoutMaster = new TableLayoutPanel();
             TableLayoutTitle = new TableLayoutPanel();
             TableLayoutFilter = new TableLayoutPanel();
+            FilterResultGridView = new DataGridView();
             TableLayoutMaster.SuspendLayout();
             TableLayoutTitle.SuspendLayout();
             TableLayoutFilter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)FilterResultGridView).BeginInit();
             SuspendLayout();
             // 
             // SearchBar
@@ -49,7 +51,7 @@ namespace HandyTool.Tabs.SqlSeeker
             SearchBar.Location = new Point(3, 2);
             SearchBar.Margin = new Padding(3, 2, 3, 2);
             SearchBar.Name = "SearchBar";
-            SearchBar.Size = new Size(848, 23);
+            SearchBar.Size = new Size(844, 23);
             SearchBar.TabIndex = 0;
             SearchBar.TextChanged += SearchBar_TextChanged;
             // 
@@ -122,6 +124,7 @@ namespace HandyTool.Tabs.SqlSeeker
             TableLayoutMaster.ColumnCount = 1;
             TableLayoutMaster.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             TableLayoutMaster.Controls.Add(TableLayoutTitle, 0, 0);
+            TableLayoutMaster.Controls.Add(FilterResultGridView, 0, 1);
             TableLayoutMaster.Dock = DockStyle.Fill;
             TableLayoutMaster.Location = new Point(3, 3);
             TableLayoutMaster.Name = "TableLayoutMaster";
@@ -134,8 +137,8 @@ namespace HandyTool.Tabs.SqlSeeker
             // TableLayoutTitle
             // 
             TableLayoutTitle.ColumnCount = 2;
-            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60.22567F));
-            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 39.77433F));
+            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
             TableLayoutTitle.Controls.Add(SearchBar, 0, 0);
             TableLayoutTitle.Controls.Add(TableLayoutFilter, 1, 0);
             TableLayoutTitle.Dock = DockStyle.Fill;
@@ -158,12 +161,21 @@ namespace HandyTool.Tabs.SqlSeeker
             TableLayoutFilter.Controls.Add(CheckBoxTables, 0, 0);
             TableLayoutFilter.Controls.Add(CheckBoxStoredProcedure, 1, 0);
             TableLayoutFilter.Controls.Add(CheckBoxViews, 2, 0);
-            TableLayoutFilter.Location = new Point(857, 3);
+            TableLayoutFilter.Location = new Point(853, 3);
             TableLayoutFilter.Name = "TableLayoutFilter";
             TableLayoutFilter.RowCount = 1;
             TableLayoutFilter.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             TableLayoutFilter.Size = new Size(558, 25);
             TableLayoutFilter.TabIndex = 5;
+            // 
+            // FilterResultGridView
+            // 
+            FilterResultGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            FilterResultGridView.Dock = DockStyle.Fill;
+            FilterResultGridView.Location = new Point(3, 41);
+            FilterResultGridView.Name = "FilterResultGridView";
+            FilterResultGridView.Size = new Size(1418, 583);
+            FilterResultGridView.TabIndex = 1;
             // 
             // SqlSeekerPage
             // 
@@ -177,6 +189,7 @@ namespace HandyTool.Tabs.SqlSeeker
             TableLayoutTitle.PerformLayout();
             TableLayoutFilter.ResumeLayout(false);
             TableLayoutFilter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)FilterResultGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -189,5 +202,6 @@ namespace HandyTool.Tabs.SqlSeeker
         private TableLayoutPanel TableLayoutMaster;
         private TableLayoutPanel TableLayoutTitle;
         private TableLayoutPanel TableLayoutFilter;
+        private DataGridView FilterResultGridView;
     }
 }
