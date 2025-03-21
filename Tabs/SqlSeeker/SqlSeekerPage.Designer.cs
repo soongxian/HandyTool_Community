@@ -30,42 +30,40 @@ namespace HandyTool.Tabs.SqlSeeker
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             SearchBar = new TextBox();
             CheckBoxTables = new CheckBox();
             CheckBoxStoredProcedure = new CheckBox();
             CheckBoxViews = new CheckBox();
             CheckBoxFunctions = new CheckBox();
+            TableLayoutMaster = new TableLayoutPanel();
+            TableLayoutTitle = new TableLayoutPanel();
+            TableLayoutFilter = new TableLayoutPanel();
+            TableLayoutMaster.SuspendLayout();
+            TableLayoutTitle.SuspendLayout();
+            TableLayoutFilter.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(347, 284);
-            label1.Name = "label1";
-            label1.Size = new Size(78, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Sql Seeker";
             // 
             // SearchBar
             // 
-            SearchBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            SearchBar.Location = new Point(6, 7);
+            SearchBar.Dock = DockStyle.Fill;
+            SearchBar.Location = new Point(3, 2);
+            SearchBar.Margin = new Padding(3, 2, 3, 2);
             SearchBar.Name = "SearchBar";
-            SearchBar.Size = new Size(1311, 27);
+            SearchBar.Size = new Size(848, 23);
             SearchBar.TabIndex = 0;
             SearchBar.TextChanged += SearchBar_TextChanged;
             // 
             // CheckBoxTables
             // 
-            CheckBoxTables.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CheckBoxTables.AutoSize = true;
             CheckBoxTables.BackColor = Color.FromArgb(192, 255, 255);
             CheckBoxTables.Checked = true;
             CheckBoxTables.CheckState = CheckState.Checked;
-            CheckBoxTables.Location = new Point(1323, 7);
+            CheckBoxTables.Dock = DockStyle.Fill;
+            CheckBoxTables.Location = new Point(3, 2);
+            CheckBoxTables.Margin = new Padding(3, 2, 3, 2);
             CheckBoxTables.Name = "CheckBoxTables";
-            CheckBoxTables.Size = new Size(72, 24);
+            CheckBoxTables.Size = new Size(126, 21);
             CheckBoxTables.TabIndex = 1;
             CheckBoxTables.Text = "Tables";
             CheckBoxTables.UseVisualStyleBackColor = false;
@@ -73,14 +71,15 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // CheckBoxStoredProcedure
             // 
-            CheckBoxStoredProcedure.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CheckBoxStoredProcedure.AutoSize = true;
             CheckBoxStoredProcedure.BackColor = Color.FromArgb(192, 255, 192);
             CheckBoxStoredProcedure.Checked = true;
             CheckBoxStoredProcedure.CheckState = CheckState.Checked;
-            CheckBoxStoredProcedure.Location = new Point(1398, 7);
+            CheckBoxStoredProcedure.Dock = DockStyle.Fill;
+            CheckBoxStoredProcedure.Location = new Point(135, 2);
+            CheckBoxStoredProcedure.Margin = new Padding(3, 2, 3, 2);
             CheckBoxStoredProcedure.Name = "CheckBoxStoredProcedure";
-            CheckBoxStoredProcedure.Size = new Size(146, 24);
+            CheckBoxStoredProcedure.Size = new Size(180, 21);
             CheckBoxStoredProcedure.TabIndex = 2;
             CheckBoxStoredProcedure.Text = "Stored Procedure";
             CheckBoxStoredProcedure.UseVisualStyleBackColor = false;
@@ -88,14 +87,15 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // CheckBoxViews
             // 
-            CheckBoxViews.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CheckBoxViews.AutoSize = true;
             CheckBoxViews.BackColor = Color.FromArgb(255, 255, 192);
             CheckBoxViews.Checked = true;
             CheckBoxViews.CheckState = CheckState.Checked;
-            CheckBoxViews.Location = new Point(1376, 37);
+            CheckBoxViews.Dock = DockStyle.Fill;
+            CheckBoxViews.Location = new Point(321, 2);
+            CheckBoxViews.Margin = new Padding(3, 2, 3, 2);
             CheckBoxViews.Name = "CheckBoxViews";
-            CheckBoxViews.Size = new Size(69, 24);
+            CheckBoxViews.Size = new Size(100, 21);
             CheckBoxViews.TabIndex = 3;
             CheckBoxViews.Text = "Views";
             CheckBoxViews.UseVisualStyleBackColor = false;
@@ -103,44 +103,91 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // CheckBoxFunctions
             // 
-            CheckBoxFunctions.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             CheckBoxFunctions.AutoSize = true;
             CheckBoxFunctions.BackColor = Color.FromArgb(255, 224, 192);
             CheckBoxFunctions.Checked = true;
             CheckBoxFunctions.CheckState = CheckState.Checked;
-            CheckBoxFunctions.Location = new Point(1451, 37);
+            CheckBoxFunctions.Dock = DockStyle.Fill;
+            CheckBoxFunctions.Location = new Point(427, 2);
+            CheckBoxFunctions.Margin = new Padding(3, 2, 3, 2);
             CheckBoxFunctions.Name = "CheckBoxFunctions";
-            CheckBoxFunctions.Size = new Size(93, 24);
+            CheckBoxFunctions.Size = new Size(128, 21);
             CheckBoxFunctions.TabIndex = 4;
             CheckBoxFunctions.Text = "Functions";
             CheckBoxFunctions.UseVisualStyleBackColor = false;
             CheckBoxFunctions.CheckedChanged += CheckBox_CheckedChanged;
             // 
+            // TableLayoutMaster
+            // 
+            TableLayoutMaster.ColumnCount = 1;
+            TableLayoutMaster.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            TableLayoutMaster.Controls.Add(TableLayoutTitle, 0, 0);
+            TableLayoutMaster.Dock = DockStyle.Fill;
+            TableLayoutMaster.Location = new Point(3, 3);
+            TableLayoutMaster.Name = "TableLayoutMaster";
+            TableLayoutMaster.RowCount = 2;
+            TableLayoutMaster.RowStyles.Add(new RowStyle(SizeType.Percent, 6.060606F));
+            TableLayoutMaster.RowStyles.Add(new RowStyle(SizeType.Percent, 93.93939F));
+            TableLayoutMaster.Size = new Size(1424, 627);
+            TableLayoutMaster.TabIndex = 6;
+            // 
+            // TableLayoutTitle
+            // 
+            TableLayoutTitle.ColumnCount = 2;
+            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60.22567F));
+            TableLayoutTitle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 39.77433F));
+            TableLayoutTitle.Controls.Add(SearchBar, 0, 0);
+            TableLayoutTitle.Controls.Add(TableLayoutFilter, 1, 0);
+            TableLayoutTitle.Dock = DockStyle.Fill;
+            TableLayoutTitle.Location = new Point(3, 3);
+            TableLayoutTitle.Name = "TableLayoutTitle";
+            TableLayoutTitle.RowCount = 1;
+            TableLayoutTitle.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            TableLayoutTitle.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            TableLayoutTitle.Size = new Size(1418, 32);
+            TableLayoutTitle.TabIndex = 0;
+            // 
+            // TableLayoutFilter
+            // 
+            TableLayoutFilter.ColumnCount = 4;
+            TableLayoutFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            TableLayoutFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
+            TableLayoutFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            TableLayoutFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            TableLayoutFilter.Controls.Add(CheckBoxFunctions, 3, 0);
+            TableLayoutFilter.Controls.Add(CheckBoxTables, 0, 0);
+            TableLayoutFilter.Controls.Add(CheckBoxStoredProcedure, 1, 0);
+            TableLayoutFilter.Controls.Add(CheckBoxViews, 2, 0);
+            TableLayoutFilter.Location = new Point(857, 3);
+            TableLayoutFilter.Name = "TableLayoutFilter";
+            TableLayoutFilter.RowCount = 1;
+            TableLayoutFilter.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            TableLayoutFilter.Size = new Size(558, 25);
+            TableLayoutFilter.TabIndex = 5;
+            // 
             // SqlSeekerPage
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(CheckBoxFunctions);
-            Controls.Add(CheckBoxViews);
-            Controls.Add(CheckBoxStoredProcedure);
-            Controls.Add(CheckBoxTables);
-            Controls.Add(SearchBar);
-            Controls.Add(label1);
-            Margin = new Padding(3, 4, 3, 4);
+            Controls.Add(TableLayoutMaster);
             Name = "SqlSeekerPage";
-            Padding = new Padding(3, 4, 3, 4);
-            Size = new Size(1553, 487);
+            Size = new Size(1430, 633);
+            TableLayoutMaster.ResumeLayout(false);
+            TableLayoutTitle.ResumeLayout(false);
+            TableLayoutTitle.PerformLayout();
+            TableLayoutFilter.ResumeLayout(false);
+            TableLayoutFilter.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private TextBox SearchBar;
         private CheckBox CheckBoxTables;
         private CheckBox CheckBoxStoredProcedure;
         private CheckBox CheckBoxViews;
         private CheckBox CheckBoxFunctions;
+        private TableLayoutPanel TableLayoutMaster;
+        private TableLayoutPanel TableLayoutTitle;
+        private TableLayoutPanel TableLayoutFilter;
     }
 }
