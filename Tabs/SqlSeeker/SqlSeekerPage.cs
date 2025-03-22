@@ -32,43 +32,49 @@ namespace HandyTool.Tabs.SqlSeeker
                 TextBox FilterString = sender as TextBox;
                 string value = FilterString.Text;
 
-                string query = BuildDynamicSqlQuery(value);
-
-                using (SqlCommand cmd = new SqlCommand(query, connect))
+                if (value != null && value.Length != 0)
                 {
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    string query = BuildDynamicSqlQuery(value);
 
-                    while (reader.Read())
+                    using (SqlCommand cmd = new SqlCommand(query, connect))
                     {
-                        SqlSeekerFilterModel FilterModel = new SqlSeekerFilterModel();
-                        FilterModel.ObjectType = reader["ObjectType"].ToString();
-                        FilterModel.DatabaseName = reader["DatabaseName"].ToString();
-                        FilterModel.SchemaName = reader["SchemaName"].ToString();
-                        FilterModel.ObjectName = reader["ObjectName"].ToString();
-                        FilterModel.FullObject = reader["FullObject"].ToString();
-                        FilterModel.Parameters = reader["Parameters"].ToString();
-                        FilterModel.Example = reader["Example"].ToString();
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        FilterList.Add(FilterModel);
+                        while (reader.Read())
+                        {
+                            SqlSeekerFilterModel FilterModel = new SqlSeekerFilterModel();
+                            FilterModel.ObjectType = reader["ObjectType"].ToString();
+                            FilterModel.DatabaseName = reader["DatabaseName"].ToString();
+                            FilterModel.SchemaName = reader["SchemaName"].ToString();
+                            FilterModel.ObjectName = reader["ObjectName"].ToString();
+                            FilterModel.FullObject = reader["FullObject"].ToString();
+                            FilterModel.Parameters = reader["Parameters"].ToString();
+                            FilterModel.Example = reader["Example"].ToString();
+
+                            FilterList.Add(FilterModel);
+                        }
+
+                        reader.Close();
                     }
 
-                    reader.Close();
+                    FilterResultGridView.DataSource = FilterList;
+
+                    if (FilterResultGridView.Columns.Count > 0)
+                    {
+                        int totalWidth = FilterResultGridView.Width;
+
+                        FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
+                        FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10);
+                        FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10);
+                        FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12);
+                        FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
+                        FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
+                        FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
+                    }
                 }
-
-                FilterResultGridView.DataSource = null;
-                FilterResultGridView.DataSource = FilterList;
-
-                if (FilterResultGridView.Columns.Count > 0)
+                else
                 {
-                    int totalWidth = FilterResultGridView.Width;
-
-                    FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
-                    FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10);
-                    FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10);
-                    FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12);
-                    FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
-                    FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
-                    FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
+                    FilterResultGridView.DataSource = null;
                 }
             }
             catch (Exception ex)
