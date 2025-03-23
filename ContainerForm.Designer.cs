@@ -84,7 +84,7 @@ namespace HandyTool
             // 
             TabPage HomeTab = new TabPage("Home") { Controls = { new HomePage() } };
             ContainerTabControl.Controls.Add(HomeTab);
-            TabPage SqlAssistTab = new TabPage("Sql Assist") { Controls = { new SqlAssistPage() } };
+            TabPage SqlAssistTab = new TabPage("Sql Assist") { Controls = { new SqlAssistPage(this) } };
             ContainerTabControl.Controls.Add(SqlAssistTab);
             TabPage SqlSeekerTab = new TabPage("Sql Seeker") { Controls = { new SqlSeekerPage(this) } };
             ContainerTabControl.Controls.Add(SqlSeekerTab);
