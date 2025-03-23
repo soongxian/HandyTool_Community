@@ -15,77 +15,93 @@ namespace HandyTool.Tabs.SqlSeeker
 {
     public partial class SqlSeekerPage : UserControlMain
     {
-        SqlConnection connect = new SqlConnection(@"Server=RYANLIM_LAPTOP;Trusted_Connection=true;TrustServerCertificate=true");
-        public SqlSeekerPage()
+        private readonly ContainerForm ContainerFormFromMain;
+
+        SqlConnection connect;
+        public SqlSeekerPage(ContainerForm form)
         {
             InitializeComponent();
+            ContainerFormFromMain = form;
             FilterResultGridView.CellFormatting += FilterResultGridView_CellFormatting;  // Subscribe to the event
+        }
+
+        private void InitializeSqlConnection(string server)
+        {
+            if (!string.IsNullOrEmpty(server))
+            {
+                connect = new SqlConnection($"Server={server};Trusted_Connection=true;TrustServerCertificate=true");
+            }
         }
 
         private void SearchBar_TextChanged(object sender, EventArgs e)
         {
-            try
+            string server = ContainerFormFromMain.GetSelectedServerName();
+            if (server != null)
             {
-                List<SqlSeekerFilterModel> FilterList = new List<SqlSeekerFilterModel>();
-                connect.Open();
-
-                TextBox FilterString = sender as TextBox;
-                string value = FilterString.Text;
-
-                if (value != null && value.Length != 0)
+                InitializeSqlConnection(server);
+                try
                 {
-                    string query = BuildDynamicSqlQuery(value);
+                    List<SqlSeekerFilterModel> FilterList = new List<SqlSeekerFilterModel>();
+                    connect.Open();
 
-                    using (SqlCommand cmd = new SqlCommand(query, connect))
+                    TextBox FilterString = sender as TextBox;
+                    string value = FilterString.Text;
+
+                    if (value != null && value.Length != 0)
                     {
-                        SqlDataReader reader = cmd.ExecuteReader();
+                        string query = BuildDynamicSqlQuery(value);
 
-                        while (reader.Read())
+                        using (SqlCommand cmd = new SqlCommand(query, connect))
                         {
-                            SqlSeekerFilterModel FilterModel = new SqlSeekerFilterModel();
-                            FilterModel.ObjectType = reader["ObjectType"].ToString();
-                            FilterModel.DatabaseName = reader["DatabaseName"].ToString();
-                            FilterModel.SchemaName = reader["SchemaName"].ToString();
-                            FilterModel.ObjectName = reader["ObjectName"].ToString();
-                            FilterModel.FullObject = reader["FullObject"].ToString();
-                            FilterModel.Parameters = reader["Parameters"].ToString();
-                            FilterModel.Example = reader["Example"].ToString();
+                            SqlDataReader reader = cmd.ExecuteReader();
 
-                            FilterList.Add(FilterModel);
+                            while (reader.Read())
+                            {
+                                SqlSeekerFilterModel FilterModel = new SqlSeekerFilterModel();
+                                FilterModel.ObjectType = reader["ObjectType"].ToString();
+                                FilterModel.DatabaseName = reader["DatabaseName"].ToString();
+                                FilterModel.SchemaName = reader["SchemaName"].ToString();
+                                FilterModel.ObjectName = reader["ObjectName"].ToString();
+                                FilterModel.FullObject = reader["FullObject"].ToString();
+                                FilterModel.Parameters = reader["Parameters"].ToString();
+                                FilterModel.Example = reader["Example"].ToString();
+
+                                FilterList.Add(FilterModel);
+                            }
+
+                            reader.Close();
                         }
 
-                        reader.Close();
+                        FilterResultGridView.DataSource = FilterList;
+
+                        if (FilterResultGridView.Columns.Count > 0)
+                        {
+                            int totalWidth = FilterResultGridView.Width;
+
+                            FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
+                            FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10);
+                            FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10);
+                            FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12);
+                            FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
+                            FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
+                            FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
+                        }
                     }
-
-                    FilterResultGridView.DataSource = FilterList;
-
-                    if (FilterResultGridView.Columns.Count > 0)
+                    else
                     {
-                        int totalWidth = FilterResultGridView.Width;
-
-                        FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
-                        FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.10);
-                        FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.10);
-                        FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.12);
-                        FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
-                        FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
-                        FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
+                        FilterResultGridView.DataSource = null;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    FilterResultGridView.DataSource = null;
+                    MessageBox.Show("Error: " + ex, "Error Message"
+                            , MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex, "Error Message"
-                        , MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                if (connect.State == ConnectionState.Open)
-                    connect.Close();
+                finally
+                {
+                    if (connect.State == ConnectionState.Open)
+                        connect.Close();
+                }
             }
         }
 
