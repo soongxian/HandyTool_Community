@@ -119,7 +119,7 @@
             // 
             ComboBoxGenerateType.DisplayMember = "Update";
             ComboBoxGenerateType.FormattingEnabled = true;
-            ComboBoxGenerateType.Items.AddRange(new object[] { "Insert", "Select", "Update", "Delete" });
+            ComboBoxGenerateType.Items.AddRange(new object[] { "INSERT", "SELECT", "UPDATE", "DELETE" });
             ComboBoxGenerateType.Location = new Point(3, 69);
             ComboBoxGenerateType.Name = "ComboBoxGenerateType";
             ComboBoxGenerateType.Size = new Size(252, 28);
@@ -144,6 +144,7 @@
             CheckedListBoxQueryParam.Name = "CheckedListBoxQueryParam";
             CheckedListBoxQueryParam.Size = new Size(258, 337);
             CheckedListBoxQueryParam.TabIndex = 3;
+            CheckedListBoxQueryParam.CheckOnClick = true;
             // 
             // SqlAssistPage
             // 

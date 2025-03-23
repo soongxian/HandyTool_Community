@@ -42,10 +42,21 @@ namespace HandyTool.Tabs.SqlAssist
                             adapter.Fill(dataTable);
                             DataGridViewDisplayQuery.DataSource = dataTable;
                             DataGridViewDisplayQuery.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                            CheckedListBoxQueryParam.Items.Clear();
+                            foreach (DataColumn column in dataTable.Columns)
+                            {
+                                CheckedListBoxQueryParam.Items.Add(column.ColumnName);
+                            }
+
+                            for (int i = 0; i < CheckedListBoxQueryParam.Items.Count; i++)
+                            {
+                                CheckedListBoxQueryParam.SetItemChecked(i, true);
+                            }
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
