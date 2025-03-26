@@ -114,6 +114,7 @@
             BtnGenerateQuery.TabIndex = 1;
             BtnGenerateQuery.Text = "Generate Query";
             BtnGenerateQuery.UseVisualStyleBackColor = true;
+            BtnGenerateQuery.Click += BtnGenerateQuery_Click;
             // 
             // ComboBoxGenerateType
             // 
@@ -138,6 +139,7 @@
             // 
             // CheckedListBoxQueryParam
             // 
+            CheckedListBoxQueryParam.CheckOnClick = true;
             CheckedListBoxQueryParam.Dock = DockStyle.Fill;
             CheckedListBoxQueryParam.FormattingEnabled = true;
             CheckedListBoxQueryParam.Location = new Point(1075, 111);
