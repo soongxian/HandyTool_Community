@@ -11,7 +11,7 @@ This originally created C# WinForm application is used for help for easier usage
 1. Insert the server name.
 ![image](https://github.com/user-attachments/assets/f64df475-3889-4039-87cb-eb55c667e27e)
 
-2. Double clicking the server name to select the correct server to be used.
+2. Double clicking the server name to select the correct server to be used.  
 ![image](https://github.com/user-attachments/assets/bfe33bad-099e-4268-9888-eddd0f76098b)
 
 ### The Feature
