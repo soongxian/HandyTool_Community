@@ -10,19 +10,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace HandyTool.Tabs.SqlSeeker
 {
     public partial class SqlSeekerPage : UserControlMain
     {
         private readonly ContainerForm ContainerFormFromMain;
-
+        private Timer SearchTimer;
+        private string LastSearchText = string.Empty;
         SqlConnection connect;
+
         public SqlSeekerPage(ContainerForm form)
         {
             InitializeComponent();
             ContainerFormFromMain = form;
-            FilterResultGridView.CellFormatting += FilterResultGridView_CellFormatting;  // Subscribe to the event
+            FilterResultGridView.CellFormatting += FilterResultGridView_CellFormatting;
+            SearchTimer = new Timer();
+            SearchTimer.Interval = 500;
+            SearchTimer.Tick += SearchTimer_Tick;
+
         }
 
         private void InitializeSqlConnection(string server)
@@ -35,6 +42,19 @@ namespace HandyTool.Tabs.SqlSeeker
 
         private void SearchBar_TextChanged(object sender, EventArgs e)
         {
+            SearchTimer.Stop();
+            SearchTimer.Start();
+            LastSearchText = (sender as TextBox).Text;
+        }
+
+        private void SearchTimer_Tick(object sender, EventArgs e)
+        {
+            SearchTimer.Stop();
+            PerformSearch(LastSearchText);
+        }
+
+        private void PerformSearch(string SearchText)
+        {
             string server = ContainerFormFromMain.GetSelectedServerName();
             if (server != null)
             {
@@ -44,12 +64,9 @@ namespace HandyTool.Tabs.SqlSeeker
                     List<SqlSeekerFilterModel> FilterList = new List<SqlSeekerFilterModel>();
                     connect.Open();
 
-                    TextBox FilterString = sender as TextBox;
-                    string value = FilterString.Text;
-
-                    if (value != null && value.Length != 0)
+                    if (!string.IsNullOrEmpty(SearchText))
                     {
-                        string query = BuildDynamicSqlQuery(value);
+                        string query = BuildDynamicSqlQuery(SearchText);
 
                         using (SqlCommand cmd = new SqlCommand(query, connect))
                         {
