@@ -98,26 +98,25 @@ namespace HandyTool.Tabs.SqlAssist
                     string QueryText = query.Text;
                     string TableNameFromQuery = GetTableNameFromQuery(QueryText);
 
-                    // Get the checked columns
-                    var checkedColumns = CheckedListBoxQueryParam.CheckedItems
+                    var CheckedColumns = CheckedListBoxQueryParam.CheckedItems
                         .Cast<object>()
                         .Select(item => item.ToString())
                         .ToList();
 
                     string QueryGenerated = null;
 
-                    string selectedQueryType = ComboBoxGenerateType.SelectedItem?.ToString();
+                    string SelectedQueryType = ComboBoxGenerateType.SelectedItem?.ToString();
 
-                    switch (selectedQueryType)
+                    switch (SelectedQueryType)
                     {
                         case "INSERT":
                             if (DataTableFilled.Rows.Count > 0)
                             {
-                                StringBuilder insertQueries = new StringBuilder();
+                                StringBuilder InsertQueries = new StringBuilder();
 
                                 foreach (DataRow row in DataTableFilled.Rows)
                                 {
-                                    var columnValues = checkedColumns
+                                    var ColumnValues = CheckedColumns
                                         .Select(col => {
                                             if (row[col] == DBNull.Value)
                                             {
@@ -135,13 +134,13 @@ namespace HandyTool.Tabs.SqlAssist
                                         })
                                         .ToList();
 
-                                    string columns = string.Join(", ", checkedColumns);
-                                    string values = string.Join(", ", columnValues);
+                                    string columns = string.Join(", ", CheckedColumns);
+                                    string values = string.Join(", ", ColumnValues);
 
-                                    insertQueries.AppendLine($"INSERT INTO {TableNameFromQuery} ({columns}) VALUES ({values});");
+                                    InsertQueries.AppendLine($"INSERT INTO {TableNameFromQuery} ({columns}) VALUES ({values});");
                                 }
 
-                                QueryGenerated = insertQueries.ToString();
+                                QueryGenerated = InsertQueries.ToString();
                             }
                             else
                             {
@@ -151,20 +150,127 @@ namespace HandyTool.Tabs.SqlAssist
                             break;
 
                         case "SELECT":
-                            QueryGenerated = $"SELECT TOP 100 {string.Join(", ", checkedColumns)} FROM {TableNameFromQuery}";
+                            QueryGenerated = $"SELECT TOP 100 {string.Join(", ", CheckedColumns)} FROM {TableNameFromQuery}";
                             break;
 
                         case "UPDATE":
-                            if (checkedColumns.Count > 0)
+                            if (DataTableFilled.Rows.Count > 0 && CheckedColumns.Count > 0)
                             {
-                                string setClause = string.Join(", ",
-                                    checkedColumns.Select(col => $"{col} = @{col}"));
-                                QueryGenerated = $"UPDATE {TableNameFromQuery} SET {setClause} WHERE 1=0 -- Modify condition as needed";
+                                StringBuilder UpdateQueries = new StringBuilder();
+
+                                foreach (DataRow row in DataTableFilled.Rows)
+                                {
+                                    var AllColumns = row.Table.Columns
+                                        .Cast<DataColumn>()
+                                        .Select(c => c.ColumnName)
+                                        .ToList();
+
+                                    var ColumnValueMap = AllColumns
+                                        .ToDictionary(
+                                            col => col,
+                                            col => {
+                                                if (row[col] == DBNull.Value)
+                                                {
+                                                    return "NULL";
+                                                }
+                                                else if (row.Table.Columns[col].DataType == typeof(DateTime))
+                                                {
+                                                    DateTime dateValue = (DateTime)row[col];
+                                                    return $"'{dateValue.ToString("yyyy-MM-dd HH:mm:ss")}'";
+                                                }
+                                                else if (row.Table.Columns[col].DataType == typeof(bool))
+                                                {
+                                                    return $"'{row[col].ToString()}'";
+                                                }
+                                                else
+                                                {
+                                                    return $"'{row[col].ToString().Replace("'", "''")}'";
+                                                }
+                                            }
+                                        );
+
+                                    var SetColumns = CheckedColumns
+                                        .Select(col => $"{col} = {ColumnValueMap[col]}")
+                                        .ToList();
+
+                                    var WhereConditions = AllColumns
+                                        .Select(col => {
+                                            if (ColumnValueMap[col] == "NULL")
+                                            {
+                                                return $"{col} IS NULL";
+                                            }
+                                            return $"{col} = {ColumnValueMap[col]}";
+                                        })
+                                        .ToList();
+
+                                    UpdateQueries.AppendLine($"UPDATE {TableNameFromQuery} SET {string.Join(", ", SetColumns)} WHERE {string.Join(" AND ", WhereConditions)};");
+                                }
+
+                                QueryGenerated = UpdateQueries.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Cannot generate UPDATE statements. Ensure data and columns are selected.", "Warning",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             break;
 
                         case "DELETE":
-                            QueryGenerated = $"DELETE FROM {TableNameFromQuery} WHERE 1=0 -- Modify condition as needed";
+                            if (DataTableFilled.Rows.Count > 0 && CheckedColumns.Count > 0)
+                            {
+                                StringBuilder DeleteQueries = new StringBuilder();
+
+                                foreach (DataRow row in DataTableFilled.Rows)
+                                {
+                                    var AllColumns = row.Table.Columns
+                                        .Cast<DataColumn>()
+                                        .Select(c => c.ColumnName)
+                                        .ToList();
+
+                                    var ColumnValueMap = AllColumns
+                                        .ToDictionary(
+                                            col => col,
+                                            col => {
+                                                if (row[col] == DBNull.Value)
+                                                {
+                                                    return "NULL";
+                                                }
+                                                else if (row.Table.Columns[col].DataType == typeof(DateTime))
+                                                {
+                                                    DateTime dateValue = (DateTime)row[col];
+                                                    return $"'{dateValue.ToString("yyyy-MM-dd HH:mm:ss")}'";
+                                                }
+                                                else if (row.Table.Columns[col].DataType == typeof(bool))
+                                                {
+                                                    return $"'{row[col].ToString()}'";
+                                                }
+                                                else
+                                                {
+                                                    return $"'{row[col].ToString().Replace("'", "''")}'";
+                                                }
+                                            }
+                                        );
+
+                                    var WhereConditions = AllColumns
+                                        .Select(col => {
+                                            if (ColumnValueMap[col] == "NULL")
+                                            {
+                                                return $"{col} IS NULL";
+                                            }
+                                            return $"{col} = {ColumnValueMap[col]}";
+                                        })
+                                        .ToList();
+
+                                    DeleteQueries.AppendLine($"DELETE FROM {TableNameFromQuery} WHERE {string.Join(" AND ", WhereConditions)};");
+                                }
+
+                                QueryGenerated = DeleteQueries.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Cannot generate DELETE statements. Ensure data and columns are selected.", "Warning",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                             break;
 
                         default:
@@ -228,7 +334,6 @@ namespace HandyTool.Tabs.SqlAssist
 
                     ButtonClose.Click += (sender, e) => FormQueryResult.Close();
 
-                    // Add controls to the form
                     FormQueryResult.Controls.AddRange(new Control[]
                     {
                         LabelQueryResult,

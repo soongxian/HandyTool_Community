@@ -121,7 +121,7 @@
             ComboBoxGenerateType.DisplayMember = "Update";
             ComboBoxGenerateType.FormattingEnabled = true;
             ComboBoxGenerateType.Items.AddRange(new object[] { "INSERT", "SELECT", "UPDATE", "DELETE" });
-            ComboBoxGenerateType.Location = new Point(3, 69);
+            ComboBoxGenerateType.SelectedIndex = 0;
             ComboBoxGenerateType.Name = "ComboBoxGenerateType";
             ComboBoxGenerateType.Size = new Size(252, 28);
             ComboBoxGenerateType.TabIndex = 2;
