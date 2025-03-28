@@ -98,6 +98,7 @@
             // 
             // BtnShowQuery
             // 
+            BtnShowQuery.Dock = DockStyle.Fill;
             BtnShowQuery.Location = new Point(3, 3);
             BtnShowQuery.Name = "BtnShowQuery";
             BtnShowQuery.Size = new Size(252, 26);
@@ -108,6 +109,7 @@
             // 
             // BtnGenerateQuery
             // 
+            BtnGenerateQuery.Dock = DockStyle.Fill;
             BtnGenerateQuery.Location = new Point(3, 36);
             BtnGenerateQuery.Name = "BtnGenerateQuery";
             BtnGenerateQuery.Size = new Size(252, 26);
