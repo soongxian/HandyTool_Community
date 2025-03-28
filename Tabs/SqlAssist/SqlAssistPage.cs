@@ -24,7 +24,7 @@ namespace HandyTool.Tabs.SqlAssist
 
         private void BtnShowQuery_Click(object sender, EventArgs e)
         {
-            DataTableFilled.Clear();
+            DataTableFilled = new DataTable();
             string server = ContainerFormFromMain.GetSelectedServerName();
             if (server != null)
             {
