@@ -139,6 +139,7 @@ namespace HandyTool
             // 
             // BtnInsertServer
             // 
+            BtnInsertServer.Dock = DockStyle.Fill;
             BtnInsertServer.Location = new Point(3, 3);
             BtnInsertServer.Name = "BtnInsertServer";
             BtnInsertServer.Size = new Size(54, 21);
@@ -149,6 +150,7 @@ namespace HandyTool
             // 
             // BtnUpdateServer
             // 
+            BtnInsertServer.Dock = DockStyle.Fill;
             BtnUpdateServer.Location = new Point(77, 3);
             BtnUpdateServer.Name = "BtnUpdateServer";
             BtnUpdateServer.Size = new Size(58, 21);
@@ -159,6 +161,7 @@ namespace HandyTool
             // 
             // BtnDeleteServer
             // 
+            BtnInsertServer.Dock = DockStyle.Fill;
             BtnDeleteServer.Location = new Point(151, 3);
             BtnDeleteServer.Name = "BtnDeleteServer";
             BtnDeleteServer.Size = new Size(61, 21);
