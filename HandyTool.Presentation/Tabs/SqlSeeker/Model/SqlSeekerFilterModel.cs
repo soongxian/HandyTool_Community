@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HandyTool.Tabs.SqlSeeker.Model
+namespace HandyTool.HandyTool.Presentation.Tabs.SqlSeeker.Model
 {
     public class SqlSeekerFilterModel
     {

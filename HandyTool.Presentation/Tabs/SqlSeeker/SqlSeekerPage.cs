@@ -1,5 +1,6 @@
-﻿using HandyTool.Global;
-using HandyTool.Tabs.SqlSeeker.Model;
+﻿using HandyTool.HandyTool.Presentation.Control;
+using HandyTool.HandyTool.Presentation.Resources;
+using HandyTool.HandyTool.Presentation.Tabs.SqlSeeker.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
