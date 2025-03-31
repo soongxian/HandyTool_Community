@@ -1,4 +1,5 @@
-﻿using HandyTool.HandyTool.Presentation.Control;
+﻿using HandyTool.HandyTool.Infrastructure;
+using HandyTool.HandyTool.Presentation.Control;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace HandyTool.Tabs.SqlAssist
             string server = ContainerFormFromMain.GetSelectedServerName();
             if (server != null)
             {
-                InitializeSqlConnection(server);
+                connect = SqlConnectionHelper.InitializeSqlConnection(server);
                 try
                 {
                     connect.Open();
@@ -77,20 +78,12 @@ namespace HandyTool.Tabs.SqlAssist
             }
         }
 
-        private void InitializeSqlConnection(string server)
-        {
-            if (!string.IsNullOrEmpty(server))
-            {
-                connect = new SqlConnection($"Server={server};Trusted_Connection=true;TrustServerCertificate=true");
-            }
-        }
-
         private void BtnGenerateQuery_Click(object sender, EventArgs e)
         {
             string server = ContainerFormFromMain.GetSelectedServerName();
             if (server != null)
             {
-                InitializeSqlConnection(server);
+                connect = SqlConnectionHelper.InitializeSqlConnection(server);
                 try
                 {
                     connect.Open();

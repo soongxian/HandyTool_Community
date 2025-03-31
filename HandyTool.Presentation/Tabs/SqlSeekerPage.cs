@@ -1,6 +1,7 @@
-﻿using HandyTool.HandyTool.Presentation.Control;
+﻿using HandyTool.HandyTool.Domain.Model;
+using HandyTool.HandyTool.Infrastructure;
+using HandyTool.HandyTool.Presentation.Control;
 using HandyTool.HandyTool.Presentation.Resources;
-using HandyTool.HandyTool.Presentation.Tabs.SqlSeeker.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -33,14 +34,6 @@ namespace HandyTool.Tabs.SqlSeeker
 
         }
 
-        private void InitializeSqlConnection(string server)
-        {
-            if (!string.IsNullOrEmpty(server))
-            {
-                connect = new SqlConnection($"Server={server};Trusted_Connection=true;TrustServerCertificate=true");
-            }
-        }
-
         private void SearchBar_TextChanged(object sender, EventArgs e)
         {
             SearchTimer.Stop();
@@ -59,7 +52,7 @@ namespace HandyTool.Tabs.SqlSeeker
             string server = ContainerFormFromMain.GetSelectedServerName();
             if (server != null)
             {
-                InitializeSqlConnection(server);
+                connect = SqlConnectionHelper.InitializeSqlConnection(server);
                 try
                 {
                     List<SqlSeekerFilterModel> FilterList = new List<SqlSeekerFilterModel>();
@@ -331,23 +324,27 @@ namespace HandyTool.Tabs.SqlSeeker
 
                 if (objectType != null)
                 {
-                    switch (objectType)
+                    if (objectType.Contains("Function", StringComparison.OrdinalIgnoreCase))
                     {
-                        case "Table":
-                            rowColor = cg.ColorTable;
-                            break;
-                        case "Stored Procedure":
-                            rowColor = cg.ColorStoredProcedure;
-                            break;
-                        case "View":
-                            rowColor = cg.ColorView;
-                            break;
-                        case "Function":
-                            rowColor = cg.ColorFunction;
-                            break;
-                        default:
-                            rowColor = cg.ColorWhite;
-                            break;
+                        rowColor = cg.ColorFunction;
+                    }
+                    else
+                    {
+                        switch (objectType)
+                        {
+                            case "Table":
+                                rowColor = cg.ColorTable;
+                                break;
+                            case "Stored Procedure":
+                                rowColor = cg.ColorStoredProcedure;
+                                break;
+                            case "View":
+                                rowColor = cg.ColorView;
+                                break;
+                            default:
+                                rowColor = cg.ColorWhite;
+                                break;
+                        } 
                     }
                 }
 
