@@ -1,4 +1,4 @@
-﻿using HandyTool.Global;
+﻿using HandyTool.HandyTool.Presentation.Resources;
 
 namespace HandyTool.Tabs.SqlSeeker
 {

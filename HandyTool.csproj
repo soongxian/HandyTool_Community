@@ -18,10 +18,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Tabs\SqlAssist\SqlAssistPage.cs">
+    <Compile Update="HandyTool.Presentation\Tabs\SqlAssistPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Tabs\SqlSeeker\SqlSeekerPage.cs">
+    <Compile Update="HandyTool.Presentation\Tabs\SqlSeekerPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
