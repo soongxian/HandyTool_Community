@@ -158,6 +158,7 @@ namespace HandyTool.Tabs.SqlSeeker
             TableLayoutTitle.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutTitle.Size = new Size(1454, 34);
             TableLayoutTitle.TabIndex = 0;
+
             // 
             // DatabaseComboBox
             // 
@@ -168,6 +169,7 @@ namespace HandyTool.Tabs.SqlSeeker
             DatabaseComboBox.Name = "DatabaseComboBox";
             DatabaseComboBox.Size = new Size(430, 23);
             DatabaseComboBox.TabIndex = 5;
+            DatabaseComboBox.SelectedIndex = 0;
             DatabaseComboBox.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // RefreshButton
