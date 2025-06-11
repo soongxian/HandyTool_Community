@@ -61,7 +61,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxTables.BackColor = Color.FromArgb(192, 255, 255);
             CheckBoxTables.Checked = true;
             CheckBoxTables.CheckState = CheckState.Checked;
-            CheckBoxTables.Dock = DockStyle.Top;
+            CheckBoxTables.Dock = DockStyle.Fill;
             CheckBoxTables.Location = new Point(801, 2);
             CheckBoxTables.Margin = new Padding(3, 2, 3, 2);
             CheckBoxTables.Name = "CheckBoxTables";
@@ -77,7 +77,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxStoredProcedure.BackColor = Color.FromArgb(192, 255, 192);
             CheckBoxStoredProcedure.Checked = true;
             CheckBoxStoredProcedure.CheckState = CheckState.Checked;
-            CheckBoxStoredProcedure.Dock = DockStyle.Top;
+            CheckBoxStoredProcedure.Dock = DockStyle.Fill;
             CheckBoxStoredProcedure.Location = new Point(946, 2);
             CheckBoxStoredProcedure.Margin = new Padding(3, 2, 3, 2);
             CheckBoxStoredProcedure.Name = "CheckBoxStoredProcedure";
@@ -93,7 +93,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxViews.BackColor = Color.FromArgb(255, 255, 192);
             CheckBoxViews.Checked = true;
             CheckBoxViews.CheckState = CheckState.Checked;
-            CheckBoxViews.Dock = DockStyle.Top;
+            CheckBoxViews.Dock = DockStyle.Fill;
             CheckBoxViews.Location = new Point(1164, 2);
             CheckBoxViews.Margin = new Padding(3, 2, 3, 2);
             CheckBoxViews.Name = "CheckBoxViews";
@@ -109,7 +109,7 @@ namespace HandyTool.Tabs.SqlSeeker
             CheckBoxFunctions.BackColor = Color.FromArgb(255, 224, 192);
             CheckBoxFunctions.Checked = true;
             CheckBoxFunctions.CheckState = CheckState.Checked;
-            CheckBoxFunctions.Dock = DockStyle.Top;
+            CheckBoxFunctions.Dock = DockStyle.Fill;
             CheckBoxFunctions.Location = new Point(1309, 2);
             CheckBoxFunctions.Margin = new Padding(3, 2, 3, 2);
             CheckBoxFunctions.Name = "CheckBoxFunctions";
@@ -161,7 +161,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // DatabaseComboBox
             // 
-            DatabaseComboBox.Dock = DockStyle.Top;
+            DatabaseComboBox.Dock = DockStyle.Fill;
             DatabaseComboBox.FormattingEnabled = true;
             DatabaseComboBox.Items.AddRange(new object[] { "All (Refresh to see Db)" });
             DatabaseComboBox.Location = new Point(293, 3);
@@ -172,7 +172,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // RefreshButton
             // 
-            RefreshButton.Dock = DockStyle.Top;
+            RefreshButton.Dock = DockStyle.Fill;
             RefreshButton.Font = new Font("Wingdings 3", 8F);
             RefreshButton.Location = new Point(729, 3);
             RefreshButton.Name = "RefreshButton";
