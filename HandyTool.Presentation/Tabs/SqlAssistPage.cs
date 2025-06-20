@@ -11,7 +11,7 @@ namespace HandyTool.Tabs.SqlAssist
         private readonly ContainerForm ContainerFormFromMain;
         SqlConnection connect;
         DataTable DataTableFilled = new DataTable();
-        SqlConnectionHelper ConnectionHelper;
+        SqlConnectionHelper ConnectionHelper = new SqlConnectionHelper();
 
         public SqlAssistPage(ContainerForm form)
         {

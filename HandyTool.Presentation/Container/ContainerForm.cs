@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using CsvHelper;
+using HandyTool.HandyTool.Domain.Model;
+using HandyTool.HandyTool.Infrastructure;
+using HandyTool.HandyTool.Infrastructure.Config;
+using HandyTool.HandyTool.Presentation.InsertUpdateBox;
+using System.Globalization;
 
 namespace HandyTool
 {
@@ -15,77 +12,17 @@ namespace HandyTool
         public ContainerForm()
         {
             InitializeComponent();
-            BtnDeleteServer.Click += BtnDeleteServer_Click;
+            LoadServerList();
             ListServer.SelectedIndexChanged += ListServer_SelectedIndexChanged;
         }
 
         private void BtnInsertServer_Click(object sender, EventArgs e)
         {
-            Label LabelInsert = new Label
+            InsertUpdateBox insertForm = new InsertUpdateBox(ContainerFormConfig.CREATE_SERVER);
+            if (insertForm.ShowDialog() == DialogResult.OK)
             {
-                Text = "Insert server name here:", 
-                Location = new Point(10, 10),
-                AutoSize = true
-            };
-
-            TextBox InsertTextBox = new TextBox
-            {
-                Location = new Point(LabelInsert.Left, LabelInsert.Bottom),
-                Width = 250
-            };
-
-            Button ButtonInsertOk = new Button
-            {
-                Text = "OK",
-                Location = new Point(InsertTextBox.Left, InsertTextBox.Bottom + 10),
-                Size = new Size(75, 30)
-            };
-
-            Button ButtonInsertCancel = new Button
-            {
-                Text = "Cancel",
-
-                Location = new Point(ButtonInsertOk.Right + 10, ButtonInsertOk.Top),
-                Size = new Size(75, 30)
-            };
-
-            Form FormInsert = new Form
-            {
-                Text = "Insert Server",
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                AcceptButton = ButtonInsertOk,
-                CancelButton = ButtonInsertCancel,
-                StartPosition = FormStartPosition.CenterScreen,
-                ClientSize = new Size(270, 110)
-            };
-
-            ButtonInsertOk.Click += (s, ev) =>
-            {
-                FormInsert.DialogResult = DialogResult.OK;
-                FormInsert.Close();
-            };
-
-            ButtonInsertCancel.Click += (s, ev) =>
-            {
-                FormInsert.Close();
-            };
-
-            FormInsert.Controls.Add(LabelInsert);
-            FormInsert.Controls.Add(InsertTextBox);
-            FormInsert.Controls.Add(ButtonInsertOk);
-            FormInsert.Controls.Add(ButtonInsertCancel);
-
-            FormInsert.ShowDialog();
-
-            if (FormInsert.DialogResult == DialogResult.OK)
-            {
-                string ServerNameTextInput = InsertTextBox.Text;
-                if (!string.IsNullOrEmpty(ServerNameTextInput))
-                {
-                    ListServer.Items.Add(ServerNameTextInput);
-                }
+                string serverName = insertForm.serverName;
+                ListServer.Items.Add(serverName);
             }
         }
 
@@ -97,76 +34,53 @@ namespace HandyTool
                 return;
             }
 
-            Label LabelUpdate = new Label
-            {
-                Text = "Update server name:",
-                Location = new Point(10, 10),
-                AutoSize = true
-            };
+            InsertUpdateBox updateForm = new InsertUpdateBox(ContainerFormConfig.UPDATE_SERVER, ListServer.SelectedItem.ToString());
 
-            TextBox UpdateTextBox = new TextBox
+            if (updateForm.ShowDialog() == DialogResult.OK)
             {
-                Location = new Point(LabelUpdate.Left, LabelUpdate.Bottom + 5),
-                Width = 250,
-                Text = ListServer.SelectedItem.ToString()
-            };
-
-            Button ButtonUpdateOk = new Button
-            {
-                Text = "OK",
-                Location = new Point(UpdateTextBox.Left, UpdateTextBox.Bottom + 10),
-                Size = new Size(75, 30)
-            };
-
-            Button ButtonUpdateCancel = new Button
-            {
-                Text = "Cancel",
-                Location = new Point(ButtonUpdateOk.Right + 10, ButtonUpdateOk.Top),
-                Size = new Size(75, 30)
-            };
-
-            Form FormUpdate = new Form
-            {
-                Text = "Update Server",
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MaximizeBox = false,
-                MinimizeBox = false,
-                AcceptButton = ButtonUpdateOk,
-                CancelButton = ButtonUpdateCancel,
-                StartPosition = FormStartPosition.CenterScreen,
-                ClientSize = new Size(270, 110)
-            };
-
-            ButtonUpdateOk.Click += (s, ev) =>
-            {
-                string updatedServerName = UpdateTextBox.Text;
-
+                string updatedServerName = updateForm.serverName;
                 if (!string.IsNullOrEmpty(updatedServerName))
                 {
-                    int selectedIndex = ListServer.SelectedIndex; 
-                    ListServer.Items[selectedIndex] = updatedServerName; 
+                    int selectedIndex = ListServer.SelectedIndex;
+                    ListServer.Items[selectedIndex] = updatedServerName;
                 }
-                FormUpdate.Close();
-            };
-
-            ButtonUpdateCancel.Click += (s, ev) =>
-            {
-                FormUpdate.Close();
-            };
-
-            FormUpdate.Controls.Add(LabelUpdate);     
-            FormUpdate.Controls.Add(UpdateTextBox);  
-            FormUpdate.Controls.Add(ButtonUpdateOk);  
-            FormUpdate.Controls.Add(ButtonUpdateCancel);
-
-            FormUpdate.ShowDialog();
+            }
         }
 
         private void BtnDeleteServer_Click(object sender, EventArgs e)
         {
-            if (ListServer.SelectedItem != null)
+            if (ListServer.SelectedItem == null)
             {
-                ListServer.Items.Remove(ListServer.SelectedItem);
+                MessageBox.Show("Please select a server to delete.");
+                return;
+            }
+
+            string selectedServer = ListServer.SelectedItem.ToString();
+            ListServer.Items.Remove(selectedServer);
+
+            List<ServerCredential> records;
+            using (var reader = new StreamReader(DatabaseCsv.FilePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                records = csv.GetRecords<ServerCredential>().ToList();
+            }
+
+            var recordToDelete = records.FirstOrDefault(r => r.Server == selectedServer && r.Deleted == 0);
+            if (recordToDelete != null)
+            {
+                recordToDelete.Deleted = -1;
+
+                using (var writer = new StreamWriter(DatabaseCsv.FilePath))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteHeader<ServerCredential>();
+                    csv.NextRecord();
+                    csv.WriteRecords(records);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Server record not found in CSV.");
             }
         }
 
@@ -191,6 +105,28 @@ namespace HandyTool
             else
             {
                 return null;
+            }
+        }
+
+        private void LoadServerList()
+        {
+            ListServer.Items.Clear();
+
+            if (!File.Exists(DatabaseCsv.FilePath))
+                return;
+
+            using (var reader = new StreamReader(DatabaseCsv.FilePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                var records = csv.GetRecords<ServerCredential>();
+
+                foreach (var record in records)
+                {
+                    if (record.Deleted == 0)
+                    {
+                        ListServer.Items.Add(record.Server);
+                    }
+                }
             }
         }
     }
