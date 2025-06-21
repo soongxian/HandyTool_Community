@@ -186,6 +186,7 @@ namespace HandyTool.Tabs.SqlSeeker
             // 
             // FilterResultGridView
             // 
+            FilterResultGridView.AllowUserToOrderColumns = true;
             FilterResultGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             FilterResultGridView.Dock = DockStyle.Fill;
             FilterResultGridView.Location = new Point(3, 43);

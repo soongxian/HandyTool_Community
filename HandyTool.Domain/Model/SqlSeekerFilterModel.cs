@@ -8,7 +8,7 @@
         public string ObjectName { get; set; }
         public string FullObject { get; set; }
         public string Parameters { get; set; }
-        public string Rows { get; set; }
+        public int Rows { get; set; }
         public string Example { get; set; }
     }
 }

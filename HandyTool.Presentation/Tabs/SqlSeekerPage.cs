@@ -97,7 +97,7 @@ namespace HandyTool.Tabs.SqlSeeker
                             FilterModel.ObjectName = reader["ObjectName"].ToString();
                             FilterModel.FullObject = reader["FullObject"].ToString();
                             FilterModel.Parameters = reader["Parameters"].ToString();
-                            FilterModel.Rows = reader["Rows"].ToString();
+                            FilterModel.Rows = int.TryParse(reader["Rows"].ToString(), out int rowVal) ? rowVal : 0;
                             FilterModel.Example = reader["Example"].ToString();
 
                             FilterList.Add(FilterModel);
@@ -106,7 +106,9 @@ namespace HandyTool.Tabs.SqlSeeker
                         reader.Close();
                     }
 
-                    FilterResultGridView.DataSource = FilterList;
+                    var sortableList = new SortableBindingList<SqlSeekerFilterModel>(FilterList);
+                    var bindingSource = new BindingSource(sortableList, null);
+                    FilterResultGridView.DataSource = bindingSource;
 
                     if (FilterResultGridView.Columns.Count > 0)
                     {
@@ -115,11 +117,16 @@ namespace HandyTool.Tabs.SqlSeeker
                         FilterResultGridView.Columns["ObjectType"].Width = (int)(totalWidth * 0.08);
                         FilterResultGridView.Columns["DatabaseName"].Width = (int)(totalWidth * 0.08);
                         FilterResultGridView.Columns["SchemaName"].Width = (int)(totalWidth * 0.08);
-                        FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.10);
-                        FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.20);
+                        FilterResultGridView.Columns["ObjectName"].Width = (int)(totalWidth * 0.20);
+                        FilterResultGridView.Columns["FullObject"].Width = (int)(totalWidth * 0.10);
                         FilterResultGridView.Columns["Parameters"].Width = (int)(totalWidth * 0.10);
                         FilterResultGridView.Columns["Rows"].Width = (int)(totalWidth * 0.06);
                         FilterResultGridView.Columns["Example"].Width = (int)(totalWidth * 0.30);
+
+                        foreach (DataGridViewColumn column in FilterResultGridView.Columns)
+                        {
+                            column.SortMode = DataGridViewColumnSortMode.Automatic;
+                        }
                     }
                 }
                 else
@@ -129,8 +136,8 @@ namespace HandyTool.Tabs.SqlSeeker
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex, "Error Message"
-                        , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message, "Error Message",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
