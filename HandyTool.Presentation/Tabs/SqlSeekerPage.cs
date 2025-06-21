@@ -65,10 +65,10 @@ namespace HandyTool.Tabs.SqlSeeker
 
                 reader.Close();
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show("Error: " + ex, "Error Message"
-                        , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: No database is selected/detected", "Error Message",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -133,16 +133,15 @@ namespace HandyTool.Tabs.SqlSeeker
                 {
                     FilterResultGridView.DataSource = null;
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error Message",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
                 if (connect.State == ConnectionState.Open)
+                {
                     connect.Close();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error: No database is selected/detected", "Error Message",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

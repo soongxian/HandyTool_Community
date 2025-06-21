@@ -14,7 +14,9 @@ namespace HandyTool
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             DatabaseCsv.CheckCSV();
-            Application.Run(new ContainerForm());
+            Form containerForm = new ContainerForm();
+            containerForm.Text = "HandyTool Community Edition";
+            containerForm.ShowDialog();
         }
     }
 }

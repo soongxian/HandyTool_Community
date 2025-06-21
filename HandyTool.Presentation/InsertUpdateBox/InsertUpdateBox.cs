@@ -11,8 +11,8 @@ namespace HandyTool.HandyTool.Presentation.InsertUpdateBox
         private string formTitle;
         private Guid existingGuid = Guid.Empty;
         public string serverName => serverTextBox.Text;
-        public bool loginNeeded => loginNeededCheckbox.Checked;
-        public string userName => userNameTextBox.Text;
+        public bool authenticationNeeded => authenticationCheckbox.Checked;
+        public string login => loginTextBox.Text;
         public string password => passwordTextBox.Text;
         public InsertUpdateBox(string title, string serverSelected = "")
         {
@@ -32,11 +32,11 @@ namespace HandyTool.HandyTool.Presentation.InsertUpdateBox
             {
                 MessageBox.Show("Please enter a server name.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            if (loginNeeded)
+            if (authenticationNeeded)
             {
                 try
                 {
-                    if (string.IsNullOrWhiteSpace(userName))
+                    if (string.IsNullOrWhiteSpace(login))
                     {
                         throw new ArgumentException("Please enter a username.");
                     }
@@ -56,9 +56,9 @@ namespace HandyTool.HandyTool.Presentation.InsertUpdateBox
             ServerCredential record = new ServerCredential
             {
                 Id = Guid.NewGuid(),
-                Server = serverName,
-                LoginNeeded = loginNeeded,
-                Username = userName,
+                ServerName = serverName,
+                Authentication = authenticationNeeded,
+                Login = login,
                 Password = password
             };
 
@@ -87,9 +87,9 @@ namespace HandyTool.HandyTool.Presentation.InsertUpdateBox
             var existing = records.FirstOrDefault(r => r.Id == existingGuid);
             if (existing != null)
             {
-                existing.Server = record.Server;
-                existing.LoginNeeded = record.LoginNeeded;
-                existing.Username = record.Username;
+                existing.ServerName = record.ServerName;
+                existing.Authentication = record.Authentication;
+                existing.Login = record.Login;
                 existing.Password = record.Password;
             }
             else
@@ -128,14 +128,14 @@ namespace HandyTool.HandyTool.Presentation.InsertUpdateBox
 
                 var match = records
                     .Where(r => r.Deleted == 0)
-                    .FirstOrDefault(r => r.Server == serverSelected);
+                    .FirstOrDefault(r => r.ServerName == serverSelected);
 
                 if (match != null)
                 {
                     existingGuid = match.Id;
-                    serverTextBox.Text = match.Server;
-                    loginNeededCheckbox.Checked = match.LoginNeeded;
-                    userNameTextBox.Text = match.Username;
+                    serverTextBox.Text = match.ServerName;
+                    authenticationCheckbox.Checked = match.Authentication;
+                    loginTextBox.Text = match.Login;
                     passwordTextBox.Text = match.Password;
                 }
                 else
