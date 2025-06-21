@@ -65,7 +65,7 @@ namespace HandyTool
                 records = csv.GetRecords<ServerCredential>().ToList();
             }
 
-            var recordToDelete = records.FirstOrDefault(r => r.Server == selectedServer && r.Deleted == 0);
+            var recordToDelete = records.FirstOrDefault(r => r.ServerName == selectedServer && r.Deleted == 0);
             if (recordToDelete != null)
             {
                 recordToDelete.Deleted = -1;
@@ -124,7 +124,7 @@ namespace HandyTool
                 {
                     if (record.Deleted == 0)
                     {
-                        ListServer.Items.Add(record.Server);
+                        ListServer.Items.Add(record.ServerName);
                     }
                 }
             }

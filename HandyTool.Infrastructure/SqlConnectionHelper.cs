@@ -24,21 +24,19 @@ namespace HandyTool.HandyTool.Infrastructure
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 var records = csv.GetRecords<ServerCredential>().ToList();
-                var matched = records.FirstOrDefault(r => r.Server == server && r.Deleted == 0);
+                var matched = records.FirstOrDefault(r => r.ServerName == server && r.Deleted == 0);
 
                 if (matched != null)
                 {
                     string connectionString;
 
-                    if (matched.LoginNeeded)
+                    if (matched.Authentication)
                     {
-                        // SQL Server Authentication
-                        connectionString = $"Server={matched.Server};User Id={matched.Username};Password={matched.Password};TrustServerCertificate=true";
+                        connectionString = $"Server={matched.ServerName};User Id={matched.Login};Password={matched.Password};TrustServerCertificate=true";
                     }
                     else
                     {
-                        // Windows Authentication
-                        connectionString = $"Server={matched.Server};Trusted_Connection=true;TrustServerCertificate=true";
+                        connectionString = $"Server={matched.ServerName};Trusted_Connection=true;TrustServerCertificate=true";
                     }
 
                     return new SqlConnection(connectionString);

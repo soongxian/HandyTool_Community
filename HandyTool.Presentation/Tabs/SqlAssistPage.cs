@@ -57,17 +57,16 @@ namespace HandyTool.Tabs.SqlAssist
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
                 if (connect.State == ConnectionState.Open)
+                {
                     connect.Close();
+                }
             }
-
+            catch
+            {
+                MessageBox.Show("Error: No database is selected/detected", "Error Message",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnGenerateQuery_Click(object sender, EventArgs e)
@@ -336,9 +335,10 @@ namespace HandyTool.Tabs.SqlAssist
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
-
+                MessageBox.Show("Error: No database is selected/detected", "Error Message",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

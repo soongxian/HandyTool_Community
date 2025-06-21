@@ -30,16 +30,16 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             serverLabel = new Label();
+            authenticateLabel = new Label();
             loginLabel = new Label();
-            usernameLabel = new Label();
             passwordLabel = new Label();
             serverTextBox = new TextBox();
-            userNameTextBox = new TextBox();
+            loginTextBox = new TextBox();
             passwordTextBox = new TextBox();
             tableLayoutPanel2 = new TableLayoutPanel();
             doneButton = new Button();
             cancelButton = new Button();
-            loginNeededCheckbox = new CheckBox();
+            authenticationCheckbox = new CheckBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
@@ -50,14 +50,14 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             tableLayoutPanel1.Controls.Add(serverLabel, 0, 0);
-            tableLayoutPanel1.Controls.Add(loginLabel, 0, 1);
-            tableLayoutPanel1.Controls.Add(usernameLabel, 0, 2);
+            tableLayoutPanel1.Controls.Add(authenticateLabel, 0, 1);
+            tableLayoutPanel1.Controls.Add(loginLabel, 0, 2);
             tableLayoutPanel1.Controls.Add(passwordLabel, 0, 3);
             tableLayoutPanel1.Controls.Add(serverTextBox, 1, 0);
-            tableLayoutPanel1.Controls.Add(userNameTextBox, 1, 2);
+            tableLayoutPanel1.Controls.Add(loginTextBox, 1, 2);
             tableLayoutPanel1.Controls.Add(passwordTextBox, 1, 3);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 4);
-            tableLayoutPanel1.Controls.Add(loginNeededCheckbox, 1, 1);
+            tableLayoutPanel1.Controls.Add(authenticationCheckbox, 1, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -80,25 +80,25 @@
             serverLabel.TabIndex = 0;
             serverLabel.Text = "Server:";
             // 
+            // authenticateLabel
+            // 
+            authenticateLabel.AutoSize = true;
+            authenticateLabel.Dock = DockStyle.Fill;
+            authenticateLabel.Location = new Point(3, 38);
+            authenticateLabel.Name = "authenticateLabel";
+            authenticateLabel.Size = new Size(70, 19);
+            authenticateLabel.TabIndex = 1;
+            authenticateLabel.Text = "Auth?";
+            // 
             // loginLabel
             // 
             loginLabel.AutoSize = true;
             loginLabel.Dock = DockStyle.Fill;
-            loginLabel.Location = new Point(3, 38);
+            loginLabel.Location = new Point(3, 57);
             loginLabel.Name = "loginLabel";
-            loginLabel.Size = new Size(70, 19);
-            loginLabel.TabIndex = 1;
-            loginLabel.Text = "Login?";
-            // 
-            // usernameLabel
-            // 
-            usernameLabel.AutoSize = true;
-            usernameLabel.Dock = DockStyle.Fill;
-            usernameLabel.Location = new Point(3, 57);
-            usernameLabel.Name = "usernameLabel";
-            usernameLabel.Size = new Size(70, 38);
-            usernameLabel.TabIndex = 2;
-            usernameLabel.Text = "User Name:";
+            loginLabel.Size = new Size(70, 38);
+            loginLabel.TabIndex = 2;
+            loginLabel.Text = "Login:";
             // 
             // passwordLabel
             // 
@@ -118,13 +118,13 @@
             serverTextBox.Size = new Size(172, 23);
             serverTextBox.TabIndex = 4;
             // 
-            // userNameTextBox
+            // loginTextBox
             // 
-            userNameTextBox.Dock = DockStyle.Fill;
-            userNameTextBox.Location = new Point(79, 60);
-            userNameTextBox.Name = "userNameTextBox";
-            userNameTextBox.Size = new Size(172, 23);
-            userNameTextBox.TabIndex = 5;
+            loginTextBox.Dock = DockStyle.Fill;
+            loginTextBox.Location = new Point(79, 60);
+            loginTextBox.Name = "loginTextBox";
+            loginTextBox.Size = new Size(172, 23);
+            loginTextBox.TabIndex = 5;
             // 
             // passwordTextBox
             // 
@@ -171,15 +171,15 @@
             cancelButton.UseVisualStyleBackColor = true;
             cancelButton.Click += cancelButton_Click;
             // 
-            // loginNeededCheckbox
+            // authenticationCheckbox
             // 
-            loginNeededCheckbox.AutoSize = true;
-            loginNeededCheckbox.Dock = DockStyle.Fill;
-            loginNeededCheckbox.Location = new Point(79, 41);
-            loginNeededCheckbox.Name = "loginNeededCheckbox";
-            loginNeededCheckbox.Size = new Size(172, 13);
-            loginNeededCheckbox.TabIndex = 8;
-            loginNeededCheckbox.UseVisualStyleBackColor = true;
+            authenticationCheckbox.AutoSize = true;
+            authenticationCheckbox.Dock = DockStyle.Fill;
+            authenticationCheckbox.Location = new Point(79, 41);
+            authenticationCheckbox.Name = "authenticationCheckbox";
+            authenticationCheckbox.Size = new Size(172, 13);
+            authenticationCheckbox.TabIndex = 8;
+            authenticationCheckbox.UseVisualStyleBackColor = true;
             // 
             // InsertUpdateBox
             // 
@@ -205,15 +205,15 @@
 
         private TableLayoutPanel tableLayoutPanel1;
         private Label serverLabel;
+        private Label authenticateLabel;
         private Label loginLabel;
-        private Label usernameLabel;
         private Label passwordLabel;
         private TextBox serverTextBox;
-        private TextBox userNameTextBox;
+        private TextBox loginTextBox;
         private TextBox passwordTextBox;
         private TableLayoutPanel tableLayoutPanel2;
         private Button doneButton;
         private Button cancelButton;
-        private CheckBox loginNeededCheckbox;
+        private CheckBox authenticationCheckbox;
     }
 }
