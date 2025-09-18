@@ -34,6 +34,8 @@ namespace HandyTool.Tabs.SqlAssist
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
                         adapter.Fill(DataTableFilled);
+
+                        ReplaceByteArraysWithString(DataTableFilled);
                         DataGridViewDisplayQuery.DataSource = DataTableFilled;
                         DataGridViewDisplayQuery.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -354,6 +356,37 @@ namespace HandyTool.Tabs.SqlAssist
                 return TableName;
             }
             return null;
+        }
+
+        private void ReplaceByteArraysWithString(DataTable table)
+        {
+            var binaryColumns = new List<DataColumn>();
+
+            foreach (DataColumn col in table.Columns)
+            {
+                if (col.DataType == typeof(byte[]))
+                {
+                    binaryColumns.Add(col);
+                }
+            }
+
+            foreach (var col in binaryColumns)
+            {
+                string originalName = col.ColumnName;
+                var tempCol = new DataColumn($"{originalName}_TEMP", typeof(string));
+                table.Columns.Add(tempCol);
+
+                foreach (DataRow row in table.Rows)
+                {
+                    byte[] data = row[col] as byte[];
+                    row[tempCol] = data == null ? "" : BitConverter.ToString(data).Replace("-", "");
+                }
+
+                int originalIndex = col.Ordinal;
+                table.Columns.Remove(col);
+                tempCol.ColumnName = originalName;
+                tempCol.SetOrdinal(originalIndex);
+            }
         }
     }
 }
