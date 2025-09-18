@@ -32,6 +32,7 @@ namespace HandyTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ContainerForm));
             ContainerSplit = new SplitContainer();
             ContainerTabControl = new TabControl();
             TableLayoutForPanel2 = new TableLayoutPanel();
@@ -214,6 +215,7 @@ namespace HandyTool
             Controls.Add(ContainerSplit);
             Name = "HandyToolContainer";
             Text = "HandyTool";
+            Icon = (Icon)resources.GetObject("$this.Icon");
             ContainerSplit.Panel1.ResumeLayout(false);
             ContainerSplit.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ContainerSplit).EndInit();
